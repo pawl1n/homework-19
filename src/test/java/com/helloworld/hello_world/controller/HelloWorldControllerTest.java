@@ -8,10 +8,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest
+@WebMvcTest(HelloWorldController.class)
 class HelloWorldControllerTest {
     @Autowired
-    private MockMvc mvc;
+    protected MockMvc mvc;
 
     @Test
     void shouldReturnHelloWorld() throws Exception {
