@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-photo
+      author: andrii
+      changes:
+        - createTable:
+            tableName: photo
+            schemaName: nix
+            columns:
+              - column:
+                  type: bigInt
+                  name: id
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: url
+                  type: text
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: student_id
+                  type: bigInt
+                  constraints:
+                    foreignKeyName: photo_student_FK
+                    referencedTableName: student
+                    referencedTableSchemaName: nix
+                    referencedColumnNames: id
+                    nullable: false
