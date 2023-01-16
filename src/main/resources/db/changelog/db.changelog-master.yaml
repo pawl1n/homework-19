@@ -2,15 +2,19 @@ databaseChangeLog:
   - include:
       file: 001-create-schema.sql
       relativeToChangelogFile: true
-
   - include:
       file: 002-create-hibernate-sequence.sql
       relativeToChangelogFile: true
-
   - include:
       file: 003-create-table-student.yaml
       relativeToChangelogFile: true
-
   - include:
       file: 004-create-table-photo.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: 005-create-student-sequence.sql
+      relativeToChangelogFile: true
+  - include:
+      file: 006-create-photo-sequence.sql
+      relativeToChangelogFile: true
       relativeToChangelogFile: true
