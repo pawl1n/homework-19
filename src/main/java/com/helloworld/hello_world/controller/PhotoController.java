@@ -29,4 +29,13 @@ public class PhotoController {
         photoService.savePhoto(url, student_id, description);
     }
 
+    @GetMapping("/description")
+    public Photo findByDescription(@RequestParam String description) {
+        return photoService.findByDescription(description);
+    }
+
+    @GetMapping("/containing")
+    public List<Photo> findByDescriptionContaining(@RequestParam String description) {
+        return photoService.findByDescriptionContaining(description);
+    }
 }

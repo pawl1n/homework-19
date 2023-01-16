@@ -34,4 +34,11 @@ public class PhotoService {
         photoRepository.save(photo);
     }
     
+    public Photo findByDescription(String description) {
+        return photoRepository.findPhotoByDescription(description);
+    }
+
+    public List<Photo> findByDescriptionContaining(String description) {
+        return photoRepository.findPhotosByDescriptionContaining(description);
+    }
 }
