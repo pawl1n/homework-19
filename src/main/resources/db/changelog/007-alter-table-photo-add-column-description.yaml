@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      author: andrii
+      id: 007-alter-table-photo-add-column-description
+      changes:
+        - addColumn:
+            tableName: photo
+            schemaName: nix
+            columns:
+              - column:
+                  name: description
+                  type: text
