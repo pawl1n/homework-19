@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/photo")
+@RequestMapping("/photos")
 public class PhotoController {
 
     private final PhotoService photoService;
