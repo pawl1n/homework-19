@@ -1,0 +1,1 @@
+create sequence nix.student_seq;
