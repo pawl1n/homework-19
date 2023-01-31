@@ -1,9 +1,7 @@
 package com.helloworld.hello_world.service;
 
 import com.helloworld.hello_world.repository.PhotoRepository;
-import com.helloworld.hello_world.repository.StudentRepository;
 import com.helloworld.hello_world.repository.entity.Photo;
-import com.helloworld.hello_world.repository.entity.Student;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +12,6 @@ import java.util.List;
 public class PhotoService {
 
     private final PhotoRepository photoRepository;
-    private final StudentRepository studentRepository;
 
     public List<Photo> findAll() {
         return photoRepository.findAll();
@@ -24,13 +21,7 @@ public class PhotoService {
         return photoRepository.findById(id).orElseThrow();
     }
 
-    public void savePhoto(String url, Long student_id, String description) {
-        Photo photo = new Photo();
-        photo.setUrl(url);
-        Student student = studentRepository.findById(student_id).orElseThrow();
-        photo.setStudent(student);
-        photo.setDescription(description);
-
+    public void savePhoto(Photo photo) {
         photoRepository.save(photo);
     }
     
@@ -40,5 +31,17 @@ public class PhotoService {
 
     public List<Photo> findByDescriptionContaining(String description) {
         return photoRepository.findPhotosByDescriptionContaining(description);
+    }
+
+    public void updatePhoto(Long id, Photo photoDetails) {
+        Photo photo = photoRepository.findById(id).orElseThrow();
+        photo.setUrl(photoDetails.getUrl());
+        photo.setDescription(photoDetails.getDescription());
+
+        photoRepository.save(photo);
+    }
+
+    public void deletePhoto(Long id) {
+        photoRepository.deleteById(id);
     }
 }

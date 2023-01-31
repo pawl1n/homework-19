@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,4 +33,13 @@ public class Student {
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     List<Photo> photos;
+
+    public void setPhotos(List<Photo> photos) {
+        if (photos == null) {
+            this.photos = new ArrayList<>();
+        } else {
+            this.photos = photos;
+            this.photos.forEach(photo -> photo.setStudent(this));
+        }
+    }
 }

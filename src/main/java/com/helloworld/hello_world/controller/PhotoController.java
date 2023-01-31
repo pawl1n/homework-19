@@ -1,6 +1,7 @@
 package com.helloworld.hello_world.controller;
 
-import com.helloworld.hello_world.repository.entity.Photo;
+import com.helloworld.hello_world.controller.dto.PhotoDTO;
+import com.helloworld.hello_world.controller.dto.PhotoMapper;
 import com.helloworld.hello_world.service.PhotoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -13,29 +14,40 @@ import java.util.List;
 public class PhotoController {
 
     private final PhotoService photoService;
+    private final PhotoMapper photoMapper;
 
     @GetMapping
-    public List<Photo> findAll() {
-        return photoService.findAll();
+    public List<PhotoDTO> findAll() {
+        return photoService.findAll().stream().map(photoMapper::toDTO).toList();
     }
 
     @GetMapping("/{id}")
-    public Photo findById(@PathVariable Long id) {
-        return photoService.findById(id);
-    }
-
-    @GetMapping("/create")
-    public void savePhoto(@RequestParam String url, @RequestParam Long student_id, @RequestParam String description) {
-        photoService.savePhoto(url, student_id, description);
+    public PhotoDTO findById(@PathVariable Long id) {
+        return photoMapper.toDTO(photoService.findById(id));
     }
 
     @GetMapping("/description")
-    public Photo findByDescription(@RequestParam String description) {
-        return photoService.findByDescription(description);
+    public PhotoDTO findByDescription(@RequestParam String description) {
+        return photoMapper.toDTO(photoService.findByDescription(description));
     }
 
     @GetMapping("/containing")
-    public List<Photo> findByDescriptionContaining(@RequestParam String description) {
-        return photoService.findByDescriptionContaining(description);
+    public List<PhotoDTO> findByDescriptionContaining(@RequestParam String description) {
+        return photoService.findByDescriptionContaining(description).stream().map(photoMapper::toDTO).toList();
+    }
+
+//    @PostMapping
+//    public void savePhoto(@RequestBody PhotoDTO photoDTO) {
+//        photoService.savePhoto(photoMapper.toDomain(photoDTO));
+//    }
+
+    @PutMapping("/{id}")
+    public void updatePhoto(@PathVariable Long id, @RequestBody PhotoDTO photoDTO) {
+        photoService.updatePhoto(id, photoMapper.toDomain(photoDTO));
+    }
+
+    @DeleteMapping("/{id}")
+    public void deletePhoto(@PathVariable Long id) {
+        photoService.deletePhoto(id);
     }
 }

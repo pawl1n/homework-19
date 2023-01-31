@@ -1,5 +1,7 @@
 package com.helloworld.hello_world.controller;
 
+import com.helloworld.hello_world.controller.dto.StudentDTO;
+import com.helloworld.hello_world.controller.dto.StudentMapper;
 import com.helloworld.hello_world.repository.entity.Student;
 import com.helloworld.hello_world.service.StudentService;
 import lombok.RequiredArgsConstructor;
@@ -13,19 +15,31 @@ import java.util.List;
 public class StudentController {
 
     private final StudentService studentService;
+    private final StudentMapper studentMapper;
 
     @GetMapping
-    public List<Student> findAll() {
-        return studentService.findAll();
+    public List<StudentDTO> findAll() {
+        return studentService.findAll().stream().map(studentMapper::toDTO).toList();
     }
 
     @GetMapping("/{id}")
-    public Student findById(@PathVariable Long id) {
-        return studentService.findById(id);
+    public StudentDTO findById(@PathVariable Long id) {
+        return studentMapper.toDTO(studentService.findById(id));
     }
 
-    @GetMapping("/create")
-    public void createStudent(@RequestParam String name, @RequestParam String email) {
-        studentService.createStudent(name, email);
+    @PostMapping
+    public void createStudent(@RequestBody StudentDTO studentDTO) {
+        studentService.createStudent(studentMapper.toDomain(studentDTO));
+    }
+
+    @PutMapping("/{id}")
+    public Student updateStudent(@PathVariable Long id, @RequestBody StudentDTO studentDTO) {
+        studentService.updateStudent(id, studentMapper.toDomain(studentDTO));
+        return studentMapper.toDomain(studentDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        studentService.delete(id);
     }
 }

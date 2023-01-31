@@ -21,12 +21,20 @@ public class StudentService {
         return studentRepository.findById(id).orElseThrow();
     }
 
-    public void createStudent(String name, String email) {
-        Student student = new Student();
-        student.setName(name);
-        student.setEmail(email);
+    public void createStudent(Student student) {
+        studentRepository.save(student);
+    }
+
+    public void updateStudent(Long id, Student studentDetails) {
+        Student student = studentRepository.findById(id).orElseThrow();
+        student.setName(studentDetails.getName());
+        student.setEmail(studentDetails.getEmail());
+        student.setPhotos(studentDetails.getPhotos());
 
         studentRepository.save(student);
     }
 
+    public void delete(Long id) {
+        studentRepository.deleteById(id);
+    }
 }
