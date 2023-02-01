@@ -51,7 +51,7 @@ public class PhotoController {
     @PutMapping
     public ResponseEntity<PhotoDto> updatePhoto(@RequestBody PhotoDto photoDto) {
         PhotoDto responseDto = photoMapper.toDto(photoService.updatePhoto(photoMapper.toDomain(photoDto)));
-        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
+        return ResponseEntity.ok(responseDto);
     }
 
     @DeleteMapping("/{id}")
