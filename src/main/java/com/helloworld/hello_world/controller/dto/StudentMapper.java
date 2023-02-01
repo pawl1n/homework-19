@@ -5,6 +5,6 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface StudentMapper {
-    StudentDTO toDTO(Student student);
-    Student toDomain(StudentDTO studentDTO);
+    StudentDto toDto(Student student);
+    Student toDomain(StudentDto studentDto);
 }

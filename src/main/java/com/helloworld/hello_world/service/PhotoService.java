@@ -2,6 +2,7 @@ package com.helloworld.hello_world.service;
 
 import com.helloworld.hello_world.repository.PhotoRepository;
 import com.helloworld.hello_world.repository.entity.Photo;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,10 +34,16 @@ public class PhotoService {
         return photoRepository.findPhotosByDescriptionContaining(description);
     }
 
-    public void updatePhoto(Long id, Photo photoDetails) {
-        Photo photo = photoRepository.findById(id).orElseThrow();
-        photo.setUrl(photoDetails.getUrl());
-        photo.setDescription(photoDetails.getDescription());
+    public void updatePhoto(Photo photoDetails) {
+        Photo photo = photoRepository.findById(photoDetails.getId())
+                .orElseThrow(EntityNotFoundException::new);
+
+        if (photoDetails.getUrl() != null) {
+            photo.setUrl(photoDetails.getUrl());
+        }
+        if (photoDetails.getDescription() != null) {
+            photo.setDescription(photoDetails.getDescription());
+        }
 
         photoRepository.save(photo);
     }

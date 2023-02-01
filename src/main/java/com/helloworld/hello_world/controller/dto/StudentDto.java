@@ -5,9 +5,9 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class StudentDTO {
+public class StudentDto {
     private Long id;
     private String name;
     private String email;
-    private List<PhotoDTO> photos;
+    private List<PhotoDto> photos;
 }

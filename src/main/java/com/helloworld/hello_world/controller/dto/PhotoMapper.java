@@ -5,6 +5,6 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface PhotoMapper {
-    PhotoDTO toDTO(Photo photo);
-    Photo toDomain(PhotoDTO photoDTO);
+    PhotoDto toDto(Photo photo);
+    Photo toDomain(PhotoDto photoDto);
 }

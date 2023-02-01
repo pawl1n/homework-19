@@ -1,6 +1,5 @@
 package com.helloworld.hello_world.repository.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,9 +23,8 @@ public class Photo {
     @Column
     private String url;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
-    private Student student;
+    @Column
+    private Long studentId;
 
     @Column
     private String description;
