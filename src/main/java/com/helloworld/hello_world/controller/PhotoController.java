@@ -4,6 +4,8 @@ import com.helloworld.hello_world.controller.dto.PhotoDto;
 import com.helloworld.hello_world.controller.dto.PhotoMapper;
 import com.helloworld.hello_world.service.PhotoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,37 +19,44 @@ public class PhotoController {
     private final PhotoMapper photoMapper;
 
     @GetMapping
-    public List<PhotoDto> findAll() {
-        return photoService.findAll().stream().map(photoMapper::toDto).toList();
+    public ResponseEntity<List<PhotoDto>> findAll() {
+        List<PhotoDto> responseDto = photoMapper.toDto(photoService.findAll());
+        return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping("/{id}")
-    public PhotoDto findById(@PathVariable Long id) {
-        return photoMapper.toDto(photoService.findById(id));
+    public ResponseEntity<PhotoDto> findById(@PathVariable Long id) {
+        PhotoDto responseDto = photoMapper.toDto(photoService.findById(id));
+        return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping("/description")
-    public PhotoDto findByDescription(@RequestParam String description) {
-        return photoMapper.toDto(photoService.findByDescription(description));
+    public ResponseEntity<PhotoDto> findByDescription(@RequestParam String description) {
+        PhotoDto responseDto = photoMapper.toDto(photoService.findByDescription(description));
+        return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping("/containing")
-    public List<PhotoDto> findByDescriptionContaining(@RequestParam String description) {
-        return photoService.findByDescriptionContaining(description).stream().map(photoMapper::toDto).toList();
+    public ResponseEntity<List<PhotoDto>> findByDescriptionContaining(@RequestParam String description) {
+        List<PhotoDto> responseDto = photoMapper.toDto(photoService.findByDescriptionContaining(description));
+        return ResponseEntity.ok(responseDto);
     }
 
     @PostMapping
-    public void savePhoto(@RequestBody PhotoDto photoDto) {
-        photoService.savePhoto(photoMapper.toDomain(photoDto));
+    public ResponseEntity<PhotoDto> savePhoto(@RequestBody PhotoDto photoDto) {
+        PhotoDto responseDto = photoMapper.toDto(photoService.savePhoto(photoMapper.toDomain(photoDto)));
+        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
     @PutMapping
-    public void updatePhoto(@RequestBody PhotoDto photoDto) {
-        photoService.updatePhoto(photoMapper.toDomain(photoDto));
+    public ResponseEntity<PhotoDto> updatePhoto(@RequestBody PhotoDto photoDto) {
+        PhotoDto responseDto = photoMapper.toDto(photoService.updatePhoto(photoMapper.toDomain(photoDto)));
+        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public void deletePhoto(@PathVariable Long id) {
+    public ResponseEntity<Void> deletePhoto(@PathVariable Long id) {
         photoService.deletePhoto(id);
+        return ResponseEntity.noContent().build();
     }
 }

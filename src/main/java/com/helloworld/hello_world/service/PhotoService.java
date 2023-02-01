@@ -22,8 +22,8 @@ public class PhotoService {
         return photoRepository.findById(id).orElseThrow();
     }
 
-    public void savePhoto(Photo photo) {
-        photoRepository.save(photo);
+    public Photo savePhoto(Photo photo) {
+        return photoRepository.save(photo);
     }
     
     public Photo findByDescription(String description) {
@@ -34,7 +34,7 @@ public class PhotoService {
         return photoRepository.findPhotosByDescriptionContaining(description);
     }
 
-    public void updatePhoto(Photo photoDetails) {
+    public Photo updatePhoto(Photo photoDetails) {
         Photo photo = photoRepository.findById(photoDetails.getId())
                 .orElseThrow(EntityNotFoundException::new);
 
@@ -45,7 +45,7 @@ public class PhotoService {
             photo.setDescription(photoDetails.getDescription());
         }
 
-        photoRepository.save(photo);
+        return photoRepository.save(photo);
     }
 
     public void deletePhoto(Long id) {

@@ -22,11 +22,11 @@ public class StudentService {
         return studentRepository.findById(id).orElseThrow();
     }
 
-    public void createStudent(Student student) {
-        studentRepository.save(student);
+    public Student createStudent(Student student) {
+        return studentRepository.save(student);
     }
 
-    public void updateStudent(Student studentDetails) {
+    public Student updateStudent(Student studentDetails) {
         Student student = studentRepository.findById(studentDetails.getId())
                 .orElseThrow(EntityNotFoundException::new);
 
@@ -40,7 +40,7 @@ public class StudentService {
             student.setPhotos(studentDetails.getPhotos());
         }
 
-        studentRepository.save(student);
+        return studentRepository.save(student);
     }
 
     public void delete(Long id) {
