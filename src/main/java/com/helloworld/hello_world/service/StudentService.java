@@ -1,50 +1,17 @@
 package com.helloworld.hello_world.service;
 
-import com.helloworld.hello_world.exception.StudentNotFoundException;
-import com.helloworld.hello_world.repository.StudentRepository;
 import com.helloworld.hello_world.repository.entity.Student;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
-public class StudentService {
+public interface StudentService {
+    List<Student> findAll();
 
-    private final StudentRepository studentRepository;
+    Student findById(Long id);
 
-    public List<Student> findAll() {
-        return studentRepository.findAll();
-    }
+    Student createStudent(Student student);
 
-    public Student findById(Long id) {
-        return studentRepository.findById(id)
-                .orElseThrow(StudentNotFoundException::new);
-    }
+    Student updateStudent(Student studentDetails);
 
-    public Student createStudent(Student student) {
-        return studentRepository.save(student);
-    }
-
-    public Student updateStudent(Student studentDetails) {
-        Student student = studentRepository.findById(studentDetails.getId())
-                .orElseThrow(StudentNotFoundException::new);
-
-        if (studentDetails.getName() != null) {
-            student.setName(studentDetails.getName());
-        }
-        if (studentDetails.getEmail() != null) {
-            student.setEmail(studentDetails.getEmail());
-        }
-        if (studentDetails.getPhotos() != null && !studentDetails.getPhotos().isEmpty()) {
-            student.setPhotos(studentDetails.getPhotos());
-        }
-
-        return studentRepository.save(student);
-    }
-
-    public void delete(Long id) {
-        studentRepository.deleteById(id);
-    }
+    void delete(Long id);
 }

@@ -1,55 +1,21 @@
 package com.helloworld.hello_world.service;
 
-import com.helloworld.hello_world.exception.PhotoNotFoundException;
-import com.helloworld.hello_world.repository.PhotoRepository;
 import com.helloworld.hello_world.repository.entity.Photo;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
-public class PhotoService {
+public interface PhotoService {
+    List<Photo> findAll();
 
-    private final PhotoRepository photoRepository;
+    Photo findById(Long id);
 
-    public List<Photo> findAll() {
-        return photoRepository.findAll();
-    }
+    Photo savePhoto(Photo photo);
 
-    public Photo findById(Long id) {
-        return photoRepository.findById(id)
-                .orElseThrow(PhotoNotFoundException::new);
-    }
+    Photo findByDescription(String description);
 
-    public Photo savePhoto(Photo photo) {
-        return photoRepository.save(photo);
-    }
-    
-    public Photo findByDescription(String description) {
-        return photoRepository.findPhotoByDescription(description);
-    }
+    List<Photo> findByDescriptionContaining(String description);
 
-    public List<Photo> findByDescriptionContaining(String description) {
-        return photoRepository.findPhotosByDescriptionContaining(description);
-    }
+    Photo updatePhoto(Photo photoDetails);
 
-    public Photo updatePhoto(Photo photoDetails) {
-        Photo photo = photoRepository.findById(photoDetails.getId())
-                .orElseThrow(PhotoNotFoundException::new);
-
-        if (photoDetails.getUrl() != null) {
-            photo.setUrl(photoDetails.getUrl());
-        }
-        if (photoDetails.getDescription() != null) {
-            photo.setDescription(photoDetails.getDescription());
-        }
-
-        return photoRepository.save(photo);
-    }
-
-    public void deletePhoto(Long id) {
-        photoRepository.deleteById(id);
-    }
+    void deletePhoto(Long id);
 }
