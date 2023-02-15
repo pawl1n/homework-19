@@ -17,17 +17,17 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 
 @SpringBootTest(
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        properties = {"spring.liquibase.enabled=false"}
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class StudentControllerTest {
+class StudentControllerIT {
     @Autowired
     private StudentRepository studentRepository;
     @LocalServerPort
     private int springBootPort;
+
     @BeforeAll
-    public void configureRestAssured() {
+    public void setup() {
         RestAssured.port = springBootPort;
 
         Student student = new Student();
