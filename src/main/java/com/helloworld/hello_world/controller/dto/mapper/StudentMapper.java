@@ -1,5 +1,6 @@
-package com.helloworld.hello_world.controller.dto;
+package com.helloworld.hello_world.controller.dto.mapper;
 
+import com.helloworld.hello_world.controller.dto.StudentDto;
 import com.helloworld.hello_world.repository.entity.Student;
 import org.mapstruct.Mapper;
 

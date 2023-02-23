@@ -1,5 +1,6 @@
-package com.helloworld.hello_world.controller.dto;
+package com.helloworld.hello_world.controller.dto.mapper;
 
+import com.helloworld.hello_world.controller.dto.PhotoDto;
 import com.helloworld.hello_world.repository.entity.Photo;
 import org.mapstruct.Mapper;
 
