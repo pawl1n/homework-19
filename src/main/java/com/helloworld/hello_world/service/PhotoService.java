@@ -1,8 +1,8 @@
 package com.helloworld.hello_world.service;
 
+import com.helloworld.hello_world.exception.PhotoNotFoundException;
 import com.helloworld.hello_world.repository.PhotoRepository;
 import com.helloworld.hello_world.repository.entity.Photo;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,8 @@ public class PhotoService {
     }
 
     public Photo findById(Long id) {
-        return photoRepository.findById(id).orElseThrow();
+        return photoRepository.findById(id)
+                .orElseThrow(PhotoNotFoundException::new);
     }
 
     public Photo savePhoto(Photo photo) {
@@ -36,7 +37,7 @@ public class PhotoService {
 
     public Photo updatePhoto(Photo photoDetails) {
         Photo photo = photoRepository.findById(photoDetails.getId())
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(PhotoNotFoundException::new);
 
         if (photoDetails.getUrl() != null) {
             photo.setUrl(photoDetails.getUrl());

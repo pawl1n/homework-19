@@ -1,8 +1,8 @@
 package com.helloworld.hello_world.service;
 
+import com.helloworld.hello_world.exception.StudentNotFoundException;
 import com.helloworld.hello_world.repository.StudentRepository;
 import com.helloworld.hello_world.repository.entity.Student;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,8 @@ public class StudentService {
     }
 
     public Student findById(Long id) {
-        return studentRepository.findById(id).orElseThrow();
+        return studentRepository.findById(id)
+                .orElseThrow(StudentNotFoundException::new);
     }
 
     public Student createStudent(Student student) {
@@ -28,7 +29,7 @@ public class StudentService {
 
     public Student updateStudent(Student studentDetails) {
         Student student = studentRepository.findById(studentDetails.getId())
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(StudentNotFoundException::new);
 
         if (studentDetails.getName() != null) {
             student.setName(studentDetails.getName());
