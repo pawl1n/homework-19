@@ -2,6 +2,7 @@ package com.helloworld.hello_world.service;
 
 import com.helloworld.hello_world.repository.StudentRepository;
 import com.helloworld.hello_world.repository.entity.Student;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,12 +22,28 @@ public class StudentService {
         return studentRepository.findById(id).orElseThrow();
     }
 
-    public void createStudent(String name, String email) {
-        Student student = new Student();
-        student.setName(name);
-        student.setEmail(email);
-
-        studentRepository.save(student);
+    public Student createStudent(Student student) {
+        return studentRepository.save(student);
     }
 
+    public Student updateStudent(Student studentDetails) {
+        Student student = studentRepository.findById(studentDetails.getId())
+                .orElseThrow(EntityNotFoundException::new);
+
+        if (studentDetails.getName() != null) {
+            student.setName(studentDetails.getName());
+        }
+        if (studentDetails.getEmail() != null) {
+            student.setEmail(studentDetails.getEmail());
+        }
+        if (studentDetails.getPhotos() != null && !studentDetails.getPhotos().isEmpty()) {
+            student.setPhotos(studentDetails.getPhotos());
+        }
+
+        return studentRepository.save(student);
+    }
+
+    public void delete(Long id) {
+        studentRepository.deleteById(id);
+    }
 }

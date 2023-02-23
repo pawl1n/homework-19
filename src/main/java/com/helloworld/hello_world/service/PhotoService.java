@@ -1,9 +1,8 @@
 package com.helloworld.hello_world.service;
 
 import com.helloworld.hello_world.repository.PhotoRepository;
-import com.helloworld.hello_world.repository.StudentRepository;
 import com.helloworld.hello_world.repository.entity.Photo;
-import com.helloworld.hello_world.repository.entity.Student;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +13,6 @@ import java.util.List;
 public class PhotoService {
 
     private final PhotoRepository photoRepository;
-    private final StudentRepository studentRepository;
 
     public List<Photo> findAll() {
         return photoRepository.findAll();
@@ -24,14 +22,8 @@ public class PhotoService {
         return photoRepository.findById(id).orElseThrow();
     }
 
-    public void savePhoto(String url, Long student_id, String description) {
-        Photo photo = new Photo();
-        photo.setUrl(url);
-        Student student = studentRepository.findById(student_id).orElseThrow();
-        photo.setStudent(student);
-        photo.setDescription(description);
-
-        photoRepository.save(photo);
+    public Photo savePhoto(Photo photo) {
+        return photoRepository.save(photo);
     }
     
     public Photo findByDescription(String description) {
@@ -40,5 +32,23 @@ public class PhotoService {
 
     public List<Photo> findByDescriptionContaining(String description) {
         return photoRepository.findPhotosByDescriptionContaining(description);
+    }
+
+    public Photo updatePhoto(Photo photoDetails) {
+        Photo photo = photoRepository.findById(photoDetails.getId())
+                .orElseThrow(EntityNotFoundException::new);
+
+        if (photoDetails.getUrl() != null) {
+            photo.setUrl(photoDetails.getUrl());
+        }
+        if (photoDetails.getDescription() != null) {
+            photo.setDescription(photoDetails.getDescription());
+        }
+
+        return photoRepository.save(photo);
+    }
+
+    public void deletePhoto(Long id) {
+        photoRepository.deleteById(id);
     }
 }

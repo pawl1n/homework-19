@@ -1,8 +1,12 @@
 package com.helloworld.hello_world.controller;
 
+import com.helloworld.hello_world.controller.dto.StudentDto;
+import com.helloworld.hello_world.controller.dto.StudentMapper;
 import com.helloworld.hello_world.repository.entity.Student;
 import com.helloworld.hello_world.service.StudentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,21 +15,43 @@ import java.util.List;
 @RequestMapping("/students")
 @RequiredArgsConstructor
 public class StudentController {
-
     private final StudentService studentService;
+    private final StudentMapper studentMapper;
 
     @GetMapping
-    public List<Student> findAll() {
-        return studentService.findAll();
+    public ResponseEntity<List<StudentDto>> findAll() {
+        List<StudentDto> responseDto = studentMapper.toDto(studentService.findAll());
+
+        return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping("/{id}")
-    public Student findById(@PathVariable Long id) {
-        return studentService.findById(id);
+    public ResponseEntity<StudentDto> findById(@PathVariable Long id) {
+        StudentDto responseDto = studentMapper.toDto(studentService.findById(id));
+
+        return ResponseEntity.ok(responseDto);
     }
 
-    @GetMapping("/create")
-    public void createStudent(@RequestParam String name, @RequestParam String email) {
-        studentService.createStudent(name, email);
+    @PostMapping
+    public ResponseEntity<StudentDto> createStudent(@RequestBody StudentDto studentDto) {
+        Student response = studentService.createStudent(studentMapper.toDomain(studentDto));
+        StudentDto responseDto = studentMapper.toDto(response);
+
+        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
+    }
+
+    @PutMapping
+    public ResponseEntity<StudentDto> updateStudent(@RequestBody StudentDto studentDto) {
+        Student response = studentService.updateStudent(studentMapper.toDomain(studentDto));
+        StudentDto responseDto = studentMapper.toDto(response);
+
+        return ResponseEntity.ok(responseDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        studentService.delete(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
